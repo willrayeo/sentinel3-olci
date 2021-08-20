@@ -1,16 +1,16 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stactools-packages/ephemeral/main?filepath=docs/installation_and_basic_usage.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stactools-packages/sentinel3-olci/main?filepath=docs/installation_and_basic_usage.ipynb)
 
-# stactools-ephemeral
+# stactools-sentinel3-olci
 
-- Name: ephemeral
-- Package: `stactools.ephemeral`
-- PyPI: https://pypi.org/project/stactools-ephemeral/
+- Name: sentinel3-olci
+- Package: `stactools.sentinel3_olci`
+- PyPI: https://pypi.org/project/stactools-sentinel3-olci/
 - Owner: @githubusername
 - Dataset homepage: http://example.com
 - STAC extensions used:
   - [proj](https://github.com/stac-extensions/projection/)
 - Extra fields:
-  - `ephemeral:custom`: A custom attribute
+  - `sentinel3-olci:custom`: A custom attribute
 
 A short description of the package and its usage.
 
@@ -26,7 +26,7 @@ A short description of the package and its usage.
 Description of the command line functions
 
 ```bash
-$ stac ephemeral create-item source destination
+$ stac sentinel3-olci create-item source destination
 ```
 
-Use `stac ephemeral --help` to see all subcommands and options.
+Use `stac sentinel3-olci --help` to see all subcommands and options.

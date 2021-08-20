@@ -1,6 +1,6 @@
 import unittest
 
-from stactools.ephemeral import stac
+from stactools.sentinel3_olci import stac
 
 
 class StacTest(unittest.TestCase):
