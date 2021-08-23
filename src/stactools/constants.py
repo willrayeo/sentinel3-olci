@@ -14,7 +14,18 @@ SENTINEL_LICENSE = Link(
     + "247904/690755/Sentinel_Data_Legal_Notice",
 )
 
-SENTINEL_CONSTELLATION = "Sentinel 3"
+PRODUCT_TYPE = "OLCI"
 
-SENTINEL_CONSTELLATION = "Sentinel 3"
+#NOT SURE BEST NAME FOR OLCI PRODUCT TYPE
+
+SENTINEL_CONSTELLATION = "Sentinel 1"
+
+SENTINEL_PROVIDER = pystac.Provider(
+    name="ESA",
+    roles=["producer", "processor", "licensor"],
+    url="https://earth.esa.int/web/guest/home",
+)
+
+SAFE_MANIFEST_ASSET_KEY = "safe-manifest"
+
 
