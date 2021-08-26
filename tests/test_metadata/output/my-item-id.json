@@ -1,0 +1,82 @@
+{
+  "type": "Feature",
+  "stac_version": "1.0.0",
+  "id": "my-item-id",
+  "properties": {
+    "title": "A dummy STAC Item",
+    "description": "Used for demonstration purposes",
+    "proj:epsg": 4326,
+    "proj:bbox": [
+      -180,
+      90,
+      180,
+      -90
+    ],
+    "proj:shape": [
+      1,
+      1
+    ],
+    "proj:transform": [
+      -180,
+      360,
+      0,
+      90,
+      0,
+      180
+    ],
+    "datetime": "2021-08-26T09:29:49.007098Z"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -180,
+          -90
+        ],
+        [
+          180,
+          -90
+        ],
+        [
+          180,
+          90
+        ],
+        [
+          -180,
+          90
+        ],
+        [
+          -180,
+          -90
+        ]
+      ]
+    ]
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "/Users/williamray/Repositories/sentinel3-olci/tests/test_metadata/output/my-item-id.json",
+      "type": "application/json"
+    }
+  ],
+  "assets": {
+    "image": {
+      "href": "/Users/williamray/Repositories/sentinel3-olci/tests/test_metadata/xfdumanifest.xml",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "A dummy STAC Item COG",
+      "roles": [
+        "data"
+      ]
+    }
+  },
+  "bbox": [
+    -180,
+    90,
+    180,
+    -90
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v1.0.0/schema.json"
+  ]
+}

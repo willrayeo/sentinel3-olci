@@ -1,17 +1,12 @@
-from datetime import datetime
-import re
-import os
-from typing import Any, Dict, List, Optional
 
-from shapely.geometry import mapping, Polygon
-import pystac
+from datetime import datetime
+import os
+from typing import Any, Dict, Optional, List
+
+from shapely.geometry import mapping, Polygon  # type: ignore
 from pystac.utils import str_to_datetime
 
-from stactools.core.io import ReadHrefModifier
 from stactools.core.io.xml import XmlElement
-from stactools.core.utils import map_opt
-
-from constants import PRODUCT_METADATA_ASSET_KEY, SENTINEL_CONSTELLATION
 
 
 class ProductMetadataError(Exception):
@@ -20,10 +15,11 @@ class ProductMetadataError(Exception):
 
 class ProductMetadata:
     def __init__(
-        self, href, read_href_modifier: Optional[ReadHrefModifier] = None
+        self,
+        href,
     ) -> None:
         self.href = href
-        self._root = XmlElement.from_file(href, read_href_modifier)
+        self._root = XmlElement.from_file(href)
 
         def _get_geometries():
             # Find the footprint descriptor
@@ -34,7 +30,8 @@ class ProductMetadata:
                 )
             # Convert to values
             footprint_value = [
-                float(x) for x in footprint_text[0].text.replace(" ", ",").split(",")
+                float(x)
+                for x in footprint_text[0].text.replace(" ", ",").split(",")
             ]
 
             footprint_points = [
@@ -60,13 +57,11 @@ class ProductMetadata:
         product_id = self.product_id
         # Ensure the product id is as expected.
         if not product_id.endswith(".SAFE"):
-            raise ValueError(
-                "Unexpected value found at "
-                f"{product_id}: "
-                "this was expected to follow the sentinel 2 "
-                "naming convention, including "
-                "ending in .SAFE"
-            )
+            raise ValueError("Unexpected value found at "
+                             f"{product_id}: "
+                             "this was expected to follow the sentinel 2 "
+                             "naming convention, including "
+                             "ending in .SAFE")
 
         scene_id = self.product_id.split(".")[0]
 
@@ -79,30 +74,25 @@ class ProductMetadata:
         result = href.split("/")[-2]
         if result is None:
             raise ValueError(
-                "Cannot determine product ID using product metadata " f"at {self.href}"
-            )
+                "Cannot determine product ID using product metadata "
+                f"at {self.href}")
         else:
             return result
 
     @property
-    def datetime(self) -> datetime:
+    def get_datetime(self) -> datetime:
         start_time = self._root.findall(".//safe:startTime")[0].text
         end_time = self._root.findall(".//safe:stopTime")[0].text
 
         central_time = (
-            datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f")
-            + (
-                datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%f")
-                - datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f")
-            )
-            / 2
-        )
+            datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f") +
+            (datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%f") -
+             datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f")) / 2)
 
         if central_time is None:
             raise ValueError(
                 "Cannot determine product start time using product metadata "
-                f"at {self.href}"
-            )
+                f"at {self.href}")
         else:
             return str_to_datetime(str(central_time))
 
@@ -113,10 +103,9 @@ class ProductMetadata:
         if time is None:
             raise ValueError(
                 "Cannot determine product start time using product metadata "
-                f"at {self.href}"
-            )
+                f"at {self.href}")
         else:
-            return str_to_datetime(time[0].text)
+            return str_to_datetime(f"{time[0].text}Z")
 
     @property
     def end_datetime(self) -> datetime:
@@ -125,10 +114,9 @@ class ProductMetadata:
         if time is None:
             raise ValueError(
                 "Cannot determine product start time using product metadata "
-                f"at {self.href}"
-            )
+                f"at {self.href}")
         else:
-            return str_to_datetime(time[0].text)
+            return str_to_datetime(f"{time[0].text}Z")
 
     @property
     def platform(self) -> Optional[str]:
@@ -144,9 +132,22 @@ class ProductMetadata:
         return self._root.findall(".//safe:cycleNumber")[0].text
 
     @property
-    def image_paths(self) -> Optional[str]:
+    def image_paths(self) -> List[str]:
         head_folder = os.path.dirname(self.href)
         measurements = os.path.join(head_folder, "measurement")
-        return [x for x in os.listdir(measurements) if x.endswith("nc")]
+        return [x for x in os.listdir(measurements) if x.endswith("tiff")]
+
+    @property
+    def metadata_dict(self) -> Dict[str, Any]:
+        result = {
+            "start_datetime":
+            str(self.start_datetime),
+            "end_datetime":
+            str(self.end_datetime),
+            "s1:instrument_configuration_ID":
+            self._root.findall(".//s1sarl1:instrumentConfigurationID")[0].text,
+            "s1:datatake_id":
+            self._root.findall(".//s1sarl1:missionDataTakeID")[0].text,
+        }
 
         return {k: v for k, v in result.items() if v is not None}
