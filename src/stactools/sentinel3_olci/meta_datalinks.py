@@ -18,7 +18,7 @@ class MetadataLinks:
         granule_href: str,
     ):
         self.granule_href = granule_href
-        self.href = os.path.join(granule_href, "manifest.safe")
+        self.href = os.path.join(granule_href)
 
         root = XmlElement.from_file(self.href)
         data_object_section = root.find("dataObjectSection")

@@ -56,7 +56,7 @@ class ProductMetadata:
         """
         product_id = self.product_id
         # Ensure the product id is as expected.
-        if not product_id.endswith(".SAFE"):
+        if not product_id.endswith(".xml"):
             raise ValueError("Unexpected value found at "
                              f"{product_id}: "
                              "this was expected to follow the sentinel 2 "

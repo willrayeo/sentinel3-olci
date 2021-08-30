@@ -23,7 +23,6 @@ def create_item_command(src, dst):
 if __name__ == "__main__":
 
     input_file = "/Users/williamray/Repositories/sentinel3-olci/tests/test_metadata/xfdumanifest.xml"
-    # input_file = "/home/mlamare/Downloads/S1B_EW_GRDM_1SDH_20210813T063842_20210813T063942_028224_035DEE_6523.SAFE"
     output_dir = "/Users/williamray/Repositories/sentinel3-olci/tests/test_metadata/output/"
 
     item = create_item_command(input_file, output_dir)
